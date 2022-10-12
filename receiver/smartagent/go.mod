@@ -1,4 +1,4 @@
-module github.com/evantorrie/splunk-otel-collector/pkg/receiver/smartagentreceiver
+module github.com/evantorrie/splunk-otel-collector/receiver/smartagent
 
 go 1.19
 
