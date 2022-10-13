@@ -1,4 +1,4 @@
-module github.com/evantorrie/splunk-otel-collector/extension/smartagent
+module github.com/signalfx/splunk-otel-collector/extension/smartagent
 
 go 1.19
 
