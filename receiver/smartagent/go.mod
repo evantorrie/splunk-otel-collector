@@ -10,7 +10,7 @@ require (
 	github.com/signalfx/golib/v3 v3.3.46
 	github.com/signalfx/signalfx-agent v1.0.1-0.20220907171532-facb8bd041ff
 	github.com/signalfx/splunk-otel-collector v0.61.0
-	github.com/signalfx/splunk-otel-collector/extension/smartagentextension v0.0.0-00010101000000-000000000000
+	github.com/signalfx/splunk-otel-collector/extension/smartagentextension v0.61.0
 	github.com/signalfx/splunk-otel-collector/tests v0.0.0-00010101000000-000000000000
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.0
@@ -20,6 +20,8 @@ require (
 	go.uber.org/zap v1.23.0
 	gopkg.in/yaml.v2 v2.4.0
 )
+
+replace github.com/signalfx/splunk-otel-collector/extension/smartagentextension => ../../extension/smartagent
 
 require (
 	cloud.google.com/go/compute v1.10.0 // indirect
