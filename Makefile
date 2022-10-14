@@ -239,5 +239,8 @@ $(TOOLS)/%: | $(TOOLS)
 MULTIMOD = $(TOOLS)/multimod
 $(TOOLS)/multimod: PACKAGE=go.opentelemetry.io/build-tools/multimod
 
+GOJQ = $(TOOLS)/gojq
+$(TOOLS)/gojq: PACKAGE=github.com/itchyny/gojq/cmd/gojq
+
 .PHONY: tools
-tools: $(MULTIMOD)
+tools: $(MULTIMOD) $(GOJQ)
