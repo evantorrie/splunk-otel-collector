@@ -125,6 +125,7 @@ install-tools:
 	cd ./internal/tools && go install github.com/pavius/impi/cmd/impi
 	cd ./internal/tools && go install github.com/tcnksm/ghr
 	cd ./internal/tools && go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment
+	cd ./internal/tools && go install go.opentelemetry.io/build-tools/multimod
 
 .PHONY: otelcol
 otelcol:
