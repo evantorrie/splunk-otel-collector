@@ -14,7 +14,7 @@
 //go:build !windows
 // +build !windows
 
-package smartagentextension
+package smartagent
 
 import (
 	"context"

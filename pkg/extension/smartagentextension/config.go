@@ -22,7 +22,6 @@ import (
 	saconfig "github.com/signalfx/signalfx-agent/pkg/core/config"
 	"go.opentelemetry.io/collector/config"
 	"go.opentelemetry.io/collector/confmap"
-	"gopkg.in/yaml.v2"
 )
 
 var _ confmap.Unmarshaler = (*Config)(nil)

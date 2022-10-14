@@ -1,4 +1,4 @@
-module github.com/signalfx/splunk-otel-collector/receiver/smartagentextension
+module github.com/signalfx/splunk-otel-collector/pkg/extension/smartagentextension
 
 go 1.19
 

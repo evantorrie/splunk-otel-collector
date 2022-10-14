@@ -1,4 +1,4 @@
-module github.com/signalfx/splunk-otel-collector/processor/timestampprocessor
+module github.com/signalfx/splunk-otel-collector/pkg/processor/timestamp
 
 go 1.19
 
