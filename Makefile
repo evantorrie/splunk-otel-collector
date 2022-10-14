@@ -11,11 +11,13 @@ GIT_SHA=$(shell git rev-parse --short HEAD)
 GO_ACC=go-acc
 GOARCH=$(shell go env GOARCH)
 GOOS=$(shell go env GOOS)
+GO := go
 
 FIND_MOD_ARGS=-type f -name "go.mod"
 TO_MOD_DIR=dirname {} \; | sort | egrep  '^./'
 # NONROOT_MODS includes ./* dirs (excludes . dir)
 NONROOT_MODS := $(shell find . $(FIND_MOD_ARGS) -exec $(TO_MOD_DIR) )
+TOOLS_MOD_DIR := ./internal/tools
 
 # CircleCI runtime.NumCPU() is for host machine despite container instance only granting 2.
 # If we are in a CI job, limit to 2 (and scale as we increase executor size).
@@ -145,6 +147,11 @@ migratecheckpoint:
 	GO111MODULE=on CGO_ENABLED=0 go build -o ./bin/migratecheckpoint_$(GOOS)_$(GOARCH)$(EXTENSION) $(BUILD_INFO) ./cmd/migratecheckpoint
 	ln -sf migratecheckpoint_$(GOOS)_$(GOARCH)$(EXTENSION) ./bin/migratecheckpoint
 
+.PHONY: prerelease
+prerelease: | $(MULTIMOD)
+	@[ "${MODSET}" ] || ( echo ">> env var MODSET is not set"; exit 1 )
+	$(MULTIMOD) verify && $(MULTIMOD) prerelease -m ${MODSET}
+
 .PHONY: add-tag
 add-tag:
 	@[ "${TAG}" ] || ( echo ">> env var TAG is not set"; exit 1 )
@@ -218,3 +225,19 @@ endif
 .PHONY: update-examples
 update-examples:
 	cd examples && $(MAKE) update-examples
+
+# Tools
+
+TOOLS = $(CURDIR)/.tools
+
+$(TOOLS):
+	@mkdir -p $@
+$(TOOLS)/%: | $(TOOLS)
+	cd $(TOOLS_MOD_DIR) && \
+	$(GO) build -o $@ $(PACKAGE)
+
+MULTIMOD = $(TOOLS)/multimod
+$(TOOLS)/multimod: PACKAGE=go.opentelemetry.io/build-tools/multimod
+
+.PHONY: tools
+tools: $(MULTIMOD)
