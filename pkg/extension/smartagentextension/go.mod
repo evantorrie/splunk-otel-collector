@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/signalfx/defaults v1.2.2-0.20180531161417-70562fe60657
 	github.com/signalfx/signalfx-agent v1.0.1-0.20220907171532-facb8bd041ff
-	github.com/signalfx/splunk-otel-collector/tests v0.0.0-00010101000000-000000000000
+	github.com/signalfx/splunk-otel-collector/tests v0.61.3
 	github.com/stretchr/testify v1.8.0
 	go.opentelemetry.io/collector v0.61.0
 	gopkg.in/yaml.v2 v2.4.0
@@ -156,9 +156,9 @@ require (
 replace github.com/signalfx/splunk-otel-collector/tests => ../../../tests
 
 replace (
-	github.com/prometheus/prometheus => github.com/prometheus/prometheus v0.38.0
 
 	github.com/influxdata/telegraf => github.com/signalfx/telegraf v0.10.2-0.20210820123244-82265917ca87
+	github.com/prometheus/prometheus => github.com/prometheus/prometheus v0.38.0
 
 	github.com/signalfx/signalfx-agent/pkg/apm => github.com/signalfx/signalfx-agent/pkg/apm v0.0.0-20220810191306-a41fb5c94d53
 )
