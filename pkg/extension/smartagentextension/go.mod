@@ -1,11 +1,11 @@
-module github.com/signalfx/splunk-otel-collector/receiver/smartagentextension
+module github.com/signalfx/splunk-otel-collector/pkg/extension/smartagentextension
 
 go 1.19
 
 require (
 	github.com/signalfx/defaults v1.2.2-0.20180531161417-70562fe60657
 	github.com/signalfx/signalfx-agent v1.0.1-0.20220907171532-facb8bd041ff
-	github.com/signalfx/splunk-otel-collector/tests v0.0.0-00010101000000-000000000000
+	github.com/signalfx/splunk-otel-collector/tests v0.61.2
 	github.com/stretchr/testify v1.8.0
 	go.opentelemetry.io/collector v0.61.0
 	gopkg.in/yaml.v2 v2.4.0
@@ -68,7 +68,7 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.1-vault-3 // indirect
 	github.com/hashicorp/serf v0.9.7 // indirect
-	github.com/hashicorp/vault v1.10.3 // indirect
+	github.com/hashicorp/vault v1.10.6 // indirect
 	github.com/hashicorp/vault-plugin-auth-gcp v0.13.2 // indirect
 	github.com/hashicorp/vault/api v1.7.2 // indirect
 	github.com/hashicorp/vault/sdk v0.5.3 // indirect
@@ -156,6 +156,7 @@ require (
 replace github.com/signalfx/splunk-otel-collector/tests => ../../../tests
 
 replace (
+	github.com/influxdata/telegraf => github.com/signalfx/telegraf v0.10.2-0.20210820123244-82265917ca87
 	github.com/prometheus/prometheus => github.com/prometheus/prometheus v0.38.0
 
 	github.com/signalfx/signalfx-agent/pkg/apm => github.com/signalfx/signalfx-agent/pkg/apm v0.0.0-20220810191306-a41fb5c94d53
