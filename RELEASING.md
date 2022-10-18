@@ -27,7 +27,7 @@ tool](https://github.com/open-telemetry/opentelemetry-go-build-tools/tree/main/m
 modules which are versioned and released together.
 
 First, decide which module sets will be released and update their
-version to `<new_tag>` in `versions.yaml`.  Commit this change to a new branch.
+version to `<new tag>` in `versions.yaml`.  Commit this change to a new branch.
 
 1. Run the `prerelease` make target. It creates a separate branch
     `prerelease_<module set>_<new tag>` that will contain all release changes.
@@ -65,11 +65,11 @@ change `versions.yaml` between pre-release and this step, things should be fine.
 It is critical you make sure the version you push upstream is correct.
 [Failure to do so will lead to minor emergencies that are tough to work around](https://github.com/open-telemetry/opentelemetry-go/issues/331).
 
-1. For each module set that will be released, run the `add-module-tags` make target
+1. For **each** module set that will be released, run the `add-module-tags` make target
     using the `<commit-hash>` of the commit on the main branch for the merged Pull Request.
 
     ```
-    make add-tags MODSET=<module set> COMMIT=<commit hash>
+    make add-module-tags MODSET=<module set> COMMIT=<commit hash>
     ```
 
     It should only be necessary to provide an explicit `COMMIT` value if the
@@ -87,11 +87,13 @@ It is critical you make sure the version you push upstream is correct.
 ## Release
 
 Finally create a Release for the new `<new tag>` on GitHub.
-The release body should include all the release notes from the Changelog for this release.
 
-## Verify Examples
+## Verify External Usage
 
-After releasing verify that examples build outside of the repository.
+After the tags have been pushed to the main repo, you will now able to verify that
+other users can pull these submodules and build outside of the repository.
+
+Use the verify_modules.sh script
 
 ```
 ./verify_examples.sh
@@ -100,15 +102,3 @@ After releasing verify that examples build outside of the repository.
 The script copies examples into a different directory removes any `replace` declarations in `go.mod` and builds them.
 This ensures they build with the published release, not the local copy.
 
-## Post-Release
-
-### Contrib Repository
-
-Once verified be sure to [make a release for the `contrib` repository](https://github.com/open-telemetry/opentelemetry-go-contrib/blob/main/RELEASING.md) that uses this release.
-
-### Website Documentation
-
-Update [the documentation](./website_docs) for [the OpenTelemetry website](https://opentelemetry.io/docs/go/).
-Importantly, bump any package versions referenced to be the latest one you just released and ensure all code examples still compile and are accurate.
-
-[OpenTelemetry specification]: https://github.com/open-telemetry/opentelemetry-specification
