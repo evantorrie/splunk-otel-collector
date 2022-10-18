@@ -74,7 +74,7 @@ integration-test:
 	@set -e; for dir in $(shell find tests -name '*_test.go' | xargs -L 1 dirname | uniq | sort -r); do \
 	  echo "go test ./... in $${dir}"; \
 	  (cd "$${dir}" && \
-	   $(GOTEST) $(BUILD_INFO_TESTS) -v -timeout 5m -count 1 ./... ); \
+	   $(GOTEST) $(BUILD_INFO_TESTS) --tags=integration -v -timeout 5m -count 1 ./... ); \
 	done
 
 .PHONY: end-to-end-test
@@ -116,7 +116,7 @@ tidy-all:
 	go mod tidy -compat=1.18
 
 .PHONY: install-tools
-install-tools:
+install-tools: $(MULTIMOD) $(GOJQ)
 	cd ./internal/tools && go install github.com/client9/misspell/cmd/misspell
 	cd ./internal/tools && go install github.com/golangci/golangci-lint/cmd/golangci-lint
 	cd ./internal/tools && go install github.com/google/addlicense
@@ -143,6 +143,17 @@ migratecheckpoint:
 	go generate ./...
 	GO111MODULE=on CGO_ENABLED=0 go build -o ./bin/migratecheckpoint_$(GOOS)_$(GOARCH)$(EXTENSION) $(BUILD_INFO) ./cmd/migratecheckpoint
 	ln -sf migratecheckpoint_$(GOOS)_$(GOARCH)$(EXTENSION) ./bin/migratecheckpoint
+
+.PHONY: prerelease
+prerelease: | $(MULTIMOD)
+	@[ "${MODSET}" ] || ( echo ">> env var MODSET is not set"; exit 1 )
+	$(MULTIMOD) verify && $(MULTIMOD) prerelease -m ${MODSET}
+
+COMMIT ?= "HEAD"
+.PHONY: add-module-tags
+add-module-tags: | $(MULTIMOD)
+	@[ "${MODSET}" ] || ( echo ">> env var MODSET is not set"; exit 1 )
+	$(MULTIMOD) verify && $(MULTIMOD) tag -m ${MODSET} -c ${COMMIT}
 
 .PHONY: add-tag
 add-tag:
@@ -217,3 +228,20 @@ endif
 .PHONY: update-examples
 update-examples:
 	cd examples && $(MAKE) update-examples
+
+# Tools
+
+TOOLS_MOD_DIR := ./internal/tools
+TOOLSDIR := $(CURDIR)/.tools
+
+$(TOOLSDIR):
+	@mkdir -p $@
+$(TOOLSDIR)/%: | $(TOOLSDIR)
+	cd $(TOOLS_MOD_DIR) && \
+	go build -o $@ $(PACKAGE)
+
+MULTIMOD := $(TOOLSDIR)/multimod
+$(TOOLSDIR)/multimod: PACKAGE=go.opentelemetry.io/build-tools/multimod
+
+GOJQ := $(TOOLSDIR)/gojq
+$(TOOLSDIR)/gojq: PACKAGE=github.com/itchyny/gojq/cmd/gojq
