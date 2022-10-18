@@ -27,11 +27,9 @@ tool](https://github.com/open-telemetry/opentelemetry-go-build-tools/tree/main/m
 modules which are versioned and released together.
 
 First, decide which module sets will be released and update their
-versions in `versions.yaml`.  Commit this change to a new branch.
+version to `<new_tag>` in `versions.yaml`.  Commit this change to a new branch.
 
-Update go.mod for submodules to depend on the new release which will happen in the next step.
-
-1. Run the `prerelease` make target. It creates a branch
+1. Run the `prerelease` make target. It creates a separate branch
     `prerelease_<module set>_<new tag>` that will contain all release changes.
 
     ```
@@ -52,18 +50,8 @@ Update go.mod for submodules to depend on the new release which will happen in t
     ```
 
 3. Update the [Changelog](./CHANGELOG.md).
-   - Make sure all relevant changes for this release are included and are in language that non-contributors to the project can understand.
-       To verify this, you can look directly at the commits since the `<last tag>`.
-
-       ```
-       git --no-pager log --pretty=oneline "<last tag>..HEAD"
-       ```
-
-   - Move all the `Unreleased` changes into a new section following the title scheme (`[<new tag>] - <date of release>`).
-   - Update all the appropriate links at the bottom.
 
 4. Push the changes to upstream and create a Pull Request on GitHub.
-    Be sure to include the curated changes from the [Changelog](./CHANGELOG.md) in the description.
 
 ## Tag
 
@@ -75,9 +63,9 @@ change `versions.yaml` between pre-release and this step, things should be fine.
 
 ***IMPORTANT***: [There is currently no way to remove an incorrectly tagged version of a Go module](https://github.com/golang/go/issues/34189).
 It is critical you make sure the version you push upstream is correct.
-[Failure to do so will lead to minor emergencies and tough to work around](https://github.com/open-telemetry/opentelemetry-go/issues/331).
+[Failure to do so will lead to minor emergencies that are tough to work around](https://github.com/open-telemetry/opentelemetry-go/issues/331).
 
-1. For each module set that will be released, run the `add-tags` make target
+1. For each module set that will be released, run the `add-module-tags` make target
     using the `<commit-hash>` of the commit on the main branch for the merged Pull Request.
 
     ```
