@@ -22,10 +22,9 @@ has been pushed to a public repository, it should not be deleted.
 ## Pre-Release
 
 The release process makes use of the [multimod
-tool](https://github.com/open-telemetry/opentelemetry-go-build-tools/tree/main/multimod)
-to ensure these conditions are met. `multimod` employs a
-`versions.yaml` file which defines sets of modules which should be all be versioned and
-released together.
+tool](https://github.com/open-telemetry/opentelemetry-go-build-tools/tree/main/multimod).
+`multimod` employs a `versions.yaml` file which defines sets of
+modules which are versioned and released together.
 
 First, decide which module sets will be released and update their
 versions in `versions.yaml`.  Commit this change to a new branch.
