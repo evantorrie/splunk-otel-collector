@@ -121,7 +121,7 @@ tidy-all:
 	go mod tidy -compat=1.18
 
 .PHONY: install-tools
-install-tools:
+install-tools: $(MULTIMOD) $(GOJQ)
 	cd ./internal/tools && go install github.com/client9/misspell/cmd/misspell
 	cd ./internal/tools && go install github.com/golangci/golangci-lint/cmd/golangci-lint
 	cd ./internal/tools && go install github.com/google/addlicense
@@ -148,6 +148,17 @@ migratecheckpoint:
 	go generate ./...
 	GO111MODULE=on CGO_ENABLED=0 go build -trimpath -o ./bin/migratecheckpoint_$(GOOS)_$(GOARCH)$(EXTENSION) $(BUILD_INFO) ./cmd/migratecheckpoint
 	ln -sf migratecheckpoint_$(GOOS)_$(GOARCH)$(EXTENSION) ./bin/migratecheckpoint
+
+.PHONY: prerelease
+prerelease: | $(MULTIMOD)
+	@[ "${MODSET}" ] || ( echo ">> env var MODSET is not set"; exit 1 )
+	$(MULTIMOD) verify && $(MULTIMOD) prerelease -m ${MODSET}
+
+COMMIT ?= "HEAD"
+.PHONY: add-module-tags
+add-module-tags: | $(MULTIMOD)
+	@[ "${MODSET}" ] || ( echo ">> env var MODSET is not set"; exit 1 )
+	$(MULTIMOD) verify && $(MULTIMOD) tag -m ${MODSET} -c ${COMMIT}
 
 .PHONY: add-tag
 add-tag:
@@ -236,3 +247,19 @@ install-test-tools:
 .PHONY: integration-test-split
 integration-test-split: install-test-tools
 	@set -e; cd tests && gotesplit --total=$(GOTESPLIT_TOTAL) --index=$(GOTESPLIT_INDEX) ./... -- -p 1 $(BUILD_INFO_TESTS) --tags=integration -v -timeout 5m -count 1
+
+TOOLS_MOD_DIR := ./internal/tools
+TOOLSDIR := $(CURDIR)/.tools
+
+$(TOOLSDIR):
+	@mkdir -p $@
+$(TOOLSDIR)/%: | $(TOOLSDIR)
+	cd $(TOOLS_MOD_DIR) && \
+	go build -o $@ $(PACKAGE)
+
+MULTIMOD := $(TOOLSDIR)/multimod
+$(TOOLSDIR)/multimod: PACKAGE=go.opentelemetry.io/build-tools/multimod
+
+GOJQ := $(TOOLSDIR)/gojq
+$(TOOLSDIR)/gojq: PACKAGE=github.com/itchyny/gojq/cmd/gojq
+
