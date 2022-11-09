@@ -70,7 +70,7 @@ require (
 	github.com/open-telemetry/opentelemetry-collector-contrib/receiver/tcplogreceiver v0.63.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/receiver/zipkinreceiver v0.63.0
 	github.com/signalfx/golib/v3 v3.3.46
-	github.com/signalfx/signalfx-agent v1.0.1-0.20220907171532-facb8bd041ff
+	github.com/signalfx/signalfx-agent v1.0.1-0.20221102193914-2f61b1078d54
 	github.com/signalfx/splunk-otel-collector/pkg/extension/smartagentextension v0.63.0
 	github.com/signalfx/splunk-otel-collector/pkg/processor/timestampprocessor v0.63.0
 	github.com/signalfx/splunk-otel-collector/pkg/receiver/oracledbreceiver v0.63.0

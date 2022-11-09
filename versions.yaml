@@ -14,7 +14,7 @@
 
 module-sets:
   plugins:
-    version: v0.61.2
+    version: v0.63.0
     modules:
       - github.com/signalfx/splunk-otel-collector/pkg/extension/smartagentextension
       - github.com/signalfx/splunk-otel-collector/pkg/processor/timestampprocessor
@@ -22,7 +22,7 @@ module-sets:
       - github.com/signalfx/splunk-otel-collector/pkg/receiver/smartagentreceiver
       - github.com/signalfx/splunk-otel-collector/tests
   core:
-    version: v0.61.1
+    version: v0.63.0
     modules:
       - github.com/signalfx/splunk-otel-collector
 excluded-modules:
