@@ -1,3 +1,51 @@
+# Yahoo Patches to Splunk OpenTelemetry Collector
+
+The [yahoo branch](/../../tree/yahoo) of this repo contains small
+modifications to Splunk's OpenTelemetry Collector source to enable
+a [Yahoo-specific
+build](https://git.ouryahoo.com/o11y/opentelemetry-collector-releases)
+of the OpenTelemetry Collector which includes Splunk's non-upstreamed
+_smartagent_ Otel receiver/extension. The [upstream
+branch](/../../tree/upstream) should be an exact replica of Splunk's _main
+branch_ from their [github.com
+repository](https://github.com/signalfx/splunk-otel-collector/).
+
+_Note_: The _yahoo_ branch is selected as this repo's
+default branch rather than the customary _main_ default.
+
+### Why do we need custom patches?
+
+**March 1 2023** This is necessary for a custom build of OpenTelemetry
+Collector including Splunk's non-upstreamed `smartagent` receiver and
+extension modules. Although Splunk has nominally created these as Otel
+Collector Go modules, the source code is not able to be pulled into a
+generic OpenTelemetry Collector build using the OpenTelemetry
+Project's `ocb` because it is not tagged correctly in their
+public [github.com/signalfx/splunk-otel-collector
+repository](https://github.com/signalfx/splunk-otel-collector/).
+
+When/if Splunk completely addresses [this
+issue](https://github.com/signalfx/splunk-otel-collector/issues/1821) - see [this PR for more details](https://github.com/signalfx/splunk-otel-collector/pull/2141)) -
+we may be able to remove these modifications to their
+source code.
+
+### What are the patches?
+
+The changes are:
+
+1. Standardize a [RELEASE process](RELEASING.md) using the [`multimod` tool](https://github.com/open-telemetry/opentelemetry-go-build-tools/tree/main/multimod).
+   which ensures that subdirectory modules are tagged correctly.
+
+### Updating Splunk's Source
+
+When Splunk releases a new version of their source, you need to
+
+1. Check out the _main_ branch from the Splunk github.com repo
+2. Push this to the _upstream_ branch of our git.ouryahoo.com repo.
+3. Check out the _yahoo_ branch from this repo.
+4. Rebase onto the _upstream_ branch.
+5. Create a PR with these rebased changes.
+
 ---
 
 <p align="center">
